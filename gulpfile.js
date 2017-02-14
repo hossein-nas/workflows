@@ -1,6 +1,7 @@
 var gulp = require('gulp'),
 	gutil = require('gulp-util'),
 	coffee = require('gulp-coffee'),
+	compass = require('gulp-compass'),
 	browserify = require('gulp-browserify'),
 	concat = require('gulp-concat');
 
@@ -10,7 +11,9 @@ var jsSources = [
 	'components/scripts/pixgrid.js',
 	'components/scripts/tagline.js',
 	'components/scripts/template.js'
-]
+];
+var sassSources = ['components/sass/style.scss'];
+
 gulp.task('coffee',function(){
 	gulp.src(coffeeSources)
 		.pipe(coffee({bare:true}).on('error',gutil.log))
@@ -23,4 +26,17 @@ gulp.task('js',function(){
 		.pipe(browserify())
 		.pipe(gulp.dest('builds/development/js'))
 
+});
+
+gulp.task('compass',function(){
+	gulp.src(sassSources)
+		.pipe(compass({
+			css: 'builds/development/css',
+			style: 'expanded',
+			sass: 'components/sass',
+			image: 'builds/development/images',
+		})
+			.on('error',gutil.log)
+		)
+		.pipe(gulp.dest('builds/development/css'))
 });
